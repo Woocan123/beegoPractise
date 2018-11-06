@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"suanli/controllers"
+	"beegoPractise/controllers"
 	"github.com/astaxie/beego"
 )
 
@@ -10,4 +10,6 @@ func init() {
 
 	beego.Router("/getById", &controllers.GoodsNameController{},"GET:GetById")
 	beego.Router("/getList", &controllers.GoodsNameController{},"GET:GetList")
+
+	beego.Router("/add", &controllers.GoodsNameController{},"POST:Add")
 }

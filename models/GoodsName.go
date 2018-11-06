@@ -89,3 +89,4 @@ func GetList(pageNo int,pageSize int,keyword string,typeId string) ([]*GoodsName
 	//o.Raw(sqla, typeId).QueryRows(&goodsList)
 	//return goodsList,int(totalCount)
 }
+

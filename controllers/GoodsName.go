@@ -1,8 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/astaxie/beego"
-	. "suanli/models"
+	. "beegoPractise/models"
 	)
 
 
@@ -30,4 +31,12 @@ func (g *GoodsNameController) GetList()  {
 	result,total := GetList(pageNo,pageSize,keyword,typeId)
 	g.Data["json"] = map[string]interface{}{"data":result,"total":total}
 	g.ServeJSON()
+}
+
+func (g *GoodsNameController) Add()  {
+	var goodsName GoodsName
+	if err := g.ParseForm(&goodsName); err != nil {
+
+	}
+	fmt.Print(goodsName)
 }
