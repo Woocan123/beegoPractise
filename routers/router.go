@@ -11,5 +11,6 @@ func init() {
 	beego.Router("/getById", &controllers.GoodsNameController{},"GET:GetById")
 	beego.Router("/getList", &controllers.GoodsNameController{},"GET:GetList")
 
-	beego.Router("/add", &controllers.GoodsNameController{},"POST:Add")
+	beego.Router("/add", &controllers.GoodsNameController{},"PUT:AddOrUpdate")
+	beego.Router("/delete", &controllers.GoodsNameController{},"DELETE:Delete")
 }

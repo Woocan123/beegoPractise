@@ -7,17 +7,17 @@ import (
 )
 
 type GoodsName struct {
-	Id        string `orm:"pk"`
-	TypeId    string `orm:"column(type_id)"`
-	Name      string `orm:"column(name)"`
-	Spec      string `orm:"column(spec)"`
-	Version   string `orm:"column(version)"`
-	CreatedAt time.Time `orm:"column(created_at)"`
-	Hashrate  string `orm:"column(hashrate)"`
-	Watt      string `orm:"column(watt)"`
-	TopWatt   string `orm:"column(top_watt)"`
-	WuhaiWatt string `orm:"column(wuhai_watt)"`
-	CoinType  string `orm:"column(coin_type)"`
+	Id        string `orm:"pk" json:"id"`
+	TypeId    string `orm:"column(type_id)" json:"typeId" form:"typeId"`
+	Name      string `orm:"column(name)" json:"name"   form:"name"`
+	Spec      string `orm:"column(spec)" json:"spec"    form:"spec"`
+	Version   string `orm:"column(version)" json:"version"`
+	CreatedAt time.Time `orm:"column(created_at)" json:"createdAt"`
+	Hashrate  string `orm:"column(hashrate)" json:"hashrate"  form:"hashrate"`
+	Watt      string `orm:"column(watt)" json:"watt"  form:"watt"`
+	TopWatt   string `orm:"column(top_watt)" json:"topWatt"`
+	WuhaiWatt string `orm:"column(wuhai_watt)" json:"wuhaiWatt"`
+	CoinType  string `orm:"column(coin_type)" json:"coinType"  form:"coinType"`
 }
 //type GoodsName struct {
 //	Id        string `orm:"pk"`
@@ -48,6 +48,23 @@ func (goodsName *GoodsName) GetById() (*GoodsName, error) {
 	o := orm.NewOrm()
 	err := o.Read(goodsName, "id")
 	return goodsName, err
+}
+
+//保存或编辑
+func (goodsName *GoodsName) AddOrUpdate() int64 {
+	o := orm.NewOrm()
+	num,err :=o.InsertOrUpdate(goodsName,"id")
+	if err != nil {
+		err.Error()
+	}
+	return num
+}
+
+//删除
+func (goodsName *GoodsName) Delete() int64 {
+	o := orm.NewOrm()
+	num,_ :=o.Delete(goodsName,"id")
+	return num
 }
 
 //获取列表
