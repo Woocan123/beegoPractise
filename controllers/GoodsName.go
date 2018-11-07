@@ -32,16 +32,18 @@ func (g *GoodsNameController) GetList()  {
 	typeId := g.GetString("typeId")
 	result,total := GetList(pageNo,pageSize,keyword,typeId)
 	 //newResult := list.New()
-	//for _,v := range result{
-	//	var goodsNameo GoodsNameO
-	//	goodsNameo.GoodsName = *v
-	//	goodsNameo.CreatedAtFormat = v.CreatedAt.Format("2006-01-02 15:04:05")
-	//	newResult.PushFront(goodsNameo)
-	//}
+	for _,v := range result{
+		v.CreatedAtFormat = v.CreatedAt.Format("2006-01-02 15:04:05")
+		//var goodsNameo = new(GoodsNameO)
+		//goodsNameo.GoodsName = *v
+		//goodsNameo.CreatedAtFormat = v.CreatedAt.Format("2006-01-02 15:04:05")
+		//newResult.PushFront(*goodsNameo)
+	}
+	
 	data := make(map[string]interface{})
 	data["list"] = result
 	data["total"] = total
-	g.Data["json"] = map[string]interface{}{"msg":"成功","data":result,"code":0}
+	g.Data["json"] = map[string]interface{}{"msg":"成功","data":data,"code":0}
 	g.ServeJSON()
 }
 
@@ -55,7 +57,9 @@ func (g *GoodsNameController) AddOrUpdate()  {
 	if err := g.ParseForm(&goodsName); err != nil {
 
 	}
-	goodsName.CreatedAt = time.Now()
+	if id =="" {
+		goodsName.CreatedAt = time.Now()
+	}
 	goodsName.Id = id
 	goodsName.AddOrUpdate()
 	g.Data["json"] = map[string]interface{}{"msg":"成功","code":0}

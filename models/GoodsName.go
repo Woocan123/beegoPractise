@@ -18,6 +18,7 @@ type GoodsName struct {
 	TopWatt   string `orm:"column(top_watt)" json:"topWatt"`
 	WuhaiWatt string `orm:"column(wuhai_watt)" json:"wuhaiWatt"`
 	CoinType  string `orm:"column(coin_type)" json:"coinType"  form:"coinType"`
+	CreatedAtFormat string `orm:"-"`
 }
 //type GoodsName struct {
 //	Id        string `orm:"pk"`
