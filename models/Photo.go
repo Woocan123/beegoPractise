@@ -13,3 +13,8 @@ type Photo struct {
 func init()  {
 	orm.RegisterModel(new(Photo))
 }
+
+func (photo *Photo) Add()  {
+	o := orm.NewOrm()
+	o.Insert(photo)
+}

@@ -16,6 +16,7 @@ type ElectricMeterReading struct {
 	CreateUser string           `orm:"column(create_user)" json:"createUser" form:"createUser"`
 	BdcId string                `orm:"column(bdc_id)" json:"bdcId" form:"bdcId"`
 	Status string               `orm:"column(status)" json:"status" form:"status"`
+	//建立orm一对一关系后，查询没问题，插入的时候就会出现无法插入数据的情况
 	ElectricMeter *ElectricMeter `orm:"rel(one)"`
 	//ElectricMeterId string      `orm:"column(electric_meter_id)" json:"electricMeterId" form:"electricMeterId"`
 	//Photo *Photo                `orm:"rel(one)"`
@@ -33,6 +34,7 @@ func init()  {
 	orm.RegisterModel(new(ElectricMeterReading),new(ElectricMeter))
 }
 
+
 func (electricMeter *ElectricMeterReading) AddOrUpdate() int64 {
 	o := orm.NewOrm()
 	num,_ := o.InsertOrUpdate(electricMeter,"id")
@@ -44,6 +46,7 @@ func (electricMeter *ElectricMeterReading) GetById() *ElectricMeterReading {
 	o.Read(electricMeter,"id")
 	if electricMeter.ElectricMeter != nil {
 		o.Read(electricMeter.ElectricMeter)
+		//o.Read(electricMeter.Photo)
 	}
 	return electricMeter
 }
