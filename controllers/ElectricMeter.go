@@ -15,7 +15,7 @@ type ElectricMeterController struct {
 
 func (e *ElectricMeterController) GetById()  {
 	id :=e.GetString("id")
-	var electric = new(ElectricMeterReading)
+	var electric = new(ElectricMeterReadingRel)
 	electric.Id = id
 	result :=electric.GetById()
 	e.Data["json"] = map[string]interface{}{"msg":"成功","data":result,"code":0}
