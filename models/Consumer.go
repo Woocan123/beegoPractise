@@ -18,6 +18,7 @@ type Consumer struct {
 	PayWay            float64   `orm:"column(pay_way)" json:"payWay"   form:"payWay"`
 }
 
+
 func init()  {
 	orm.RegisterModel(new(Consumer))
 }
@@ -26,4 +27,15 @@ func (consumer *Consumer) GetById() *Consumer {
 	o := orm.NewOrm()
 	o.Read(consumer,"id")
 	return consumer
+}
+
+func GetConsumers(typeId string, bdcId string)  {
+	o := orm.NewOrm()
+	var consumer []*Consumer
+	qb,_ := orm.NewQueryBuilder("mysql")
+	qb.Select("t1.name,t1.id").From("consumer_goods t ").
+		LeftJoin("consumer t1").On("t.consumer_id = t1.id").
+		Where(" t.bdc_id = ?").And(" t.type_id = ?").And("t.wait_join_count !=0").GroupBy("t1.id")
+	sql := qb.String()
+	o.Raw(sql,typeId,bdcId).QueryRows(&consumer)
 }
