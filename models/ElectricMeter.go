@@ -21,6 +21,7 @@ type ElectricMeterReading struct {
 	//ElectricMeter *ElectricMeter `orm:"rel(one)"`
 	ElectricMeterId string      `orm:"column(electric_meter_id)" json:"electricMeterId" form:"electricMeterId"`
 	//Photo *Photo                `orm:"rel(one)"`
+	ElectricMeter *ElectricMeter `orm:"-"`
 }
 
 type ElectricMeter struct {
@@ -44,7 +45,13 @@ func (electricMeter *ElectricMeterReading) AddOrUpdate() int64 {
 
 func (electricMeter *ElectricMeterReading) GetById() *ElectricMeterReading {
 	o := orm.NewOrm()
-	o.Read(electricMeter,"id")
+	err := o.Read(electricMeter,"id")
+	if err == nil{
+		var e = new(ElectricMeter)
+		e.Id = electricMeter.ElectricMeterId
+		o.Read(e,"id")
+		electricMeter.ElectricMeter = e
+	}
 	//if electricMeter.ElectricMeter != nil {
 	//	o.Read(electricMeter.ElectricMeter)
 	//}
