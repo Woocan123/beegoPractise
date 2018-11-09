@@ -18,7 +18,7 @@ func (g *GoodsNameController) GetById()  {
 	var goodsName = new(GoodsName)
 	goodsName.Id = id
 	data,_ := goodsName.GetById()
-	var result = new(GoodsNameO)
+	var result GoodsNameO
 	result.GoodsName = *data
 	result.CreatedAtFormat = data.CreatedAt.Format("2006-01-02 15:04:05")
 	g.Data["json"] = map[string]interface{}{"msg":"成功","data":result,"code":0}
@@ -32,12 +32,14 @@ func (g *GoodsNameController) GetList()  {
 	typeId := g.GetString("typeId")
 	result,total := GetList(pageNo,pageSize,keyword,typeId)
 	 //newResult := list.New()
+	 //添加操作一般用slice，list则在删除操作中用
+	 //var a []*GoodsNameO
 	for _,v := range result{
 		v.CreatedAtFormat = v.CreatedAt.Format("2006-01-02 15:04:05")
 		//var goodsNameo = new(GoodsNameO)
 		//goodsNameo.GoodsName = *v
 		//goodsNameo.CreatedAtFormat = v.CreatedAt.Format("2006-01-02 15:04:05")
-		//newResult.PushFront(*goodsNameo)
+		//a = append(a, goodsNameo)
 	}
 	
 	data := make(map[string]interface{})

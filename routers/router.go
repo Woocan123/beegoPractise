@@ -16,4 +16,6 @@ func init() {
 
 	beego.Router("/electric/add", &controllers.ElectricMeterController{},"PUT:AddOrUpdate")
 	beego.Router("/electric/getById", &controllers.ElectricMeterController{},"GET:GetById")
+
+	beego.Router("/repertory/consumerMachineList", &controllers.RepertoryController{},"GET:ConsumerMachineList")
 }
