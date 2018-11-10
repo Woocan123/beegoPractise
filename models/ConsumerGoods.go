@@ -23,20 +23,42 @@ type ConsumerGoods struct {
 	DefectiveCount      int64   `orm:"column(defective_count)" json:"defectiveCount" `
 }
 
-
-func init()  {
-	orm.RegisterModel(new(ConsumerGoods))
+//用构造查询的时候struct必须要有orm，不然查询出来的字段无法与struct里的字段对应
+type ConsumerGoodsO struct {
+	Id                 string  `orm:"pk" json:"id"`
+	MinerNo            string	`orm:"column(minerNo)"`
+	WaitPutawayCount   int64	`orm:"column(waitPutawayCount)"`
+	RunCount           int64
+	PutawayCount       int64	`orm:"column(putawayCount)"`
+	JoinrepertoryCount int64	`orm:"column(joinrepertoryCount)"`
+	CheckCount         int64	`orm:"column(checkCount)"`
+	WaitJoinCount      int64	`orm:"column(waitJoinCount)"`
+	DefectiveCount     int64	`orm:"column(defectiveCount)"`
+	UndercarriageCount int64	`orm:"column(undercarriageCount)"`
+	ConsumerGoodsId    string	`orm:"column(consumerGoodsId)"`
+	Name               string
+	PassCount          int64	`orm:"column(passCount)"`
+	BadCount           int64	`orm:"column(badCount)"`
+	RepairCount        int64	`orm:"column(repairCount)"`
+	DeliveryCount      int64	`orm:"column(deliveryCount)"`
+	Spec               string
 }
 
-func GetMachineGoods(typeId string, bdcId string, consumerId string, minerNo string) []*ConsumerGoods {
+
+
+func init()  {
+	orm.RegisterModel(new(ConsumerGoods),new(ConsumerGoodsO))
+}
+
+func GetMachineGoods(typeId string, bdcId string, consumerId string, minerNo string) []*ConsumerGoodsO {
 	o := orm.NewOrm()
-	var consumerGoods []*ConsumerGoods
+	var consumerGoods []*ConsumerGoodsO
 	qb,_ := orm.NewQueryBuilder("mysql")
-	qb.Select("t3.miner_no as minerNo, if((t3.wait_join_count - t3.defective_count) < 0,t3.wait_join_count," +
-		"t3.wait_join_count - t3.defective_count) as waitPutawayCount,t3.runCount, t3.putawayCount, t3.joinrepertoryCount, " +
-		"t3.check_count as checkCount, t3.wait_join_count as waitJoinCount, t3.defective_count as defectiveCount, t3.undercarriageCount, " +
-		"t3.id as consumerGoodsId, t4.id,t4.name,if( t6.pass_count is null, 0,t6.pass_count) as passCount,if( t6.bad_count is null, 0,t6.bad_count) as badCount, " +
-		"t7.counts as repairCount, t8.counts as deliveryCount,t4.spec as spec").
+	qb.Select("t3.miner_no minerNo, if((t3.wait_join_count - t3.defective_count) < 0,t3.wait_join_count," +
+		"t3.wait_join_count - t3.defective_count) waitPutawayCount,t3.runCount, t3.putawayCount, t3.joinrepertoryCount, " +
+		"t3.check_count checkCount, t3.wait_join_count waitJoinCount, t3.defective_count defectiveCount, t3.undercarriageCount, " +
+		"t3.id consumerGoodsId, t4.id,t4.name,if( t6.pass_count is null, 0,t6.pass_count) passCount,if( t6.bad_count is null, 0,t6.bad_count) badCount, " +
+		"t7.counts repairCount, t8.counts deliveryCount,t4.spec spec").
 		From("consumer_goods t3").
 		LeftJoin("goods_name t4").On("t3.goods_id=t4.id").
 		LeftJoin("repertory t6").On("t3.id = t6.consumer_goods_id").

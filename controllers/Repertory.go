@@ -2,7 +2,6 @@ package controllers
 
 import (
 	. "beegoPractise/models"
-	"fmt"
 	"github.com/astaxie/beego"
 	"strconv"
 )
@@ -13,6 +12,7 @@ type RepertoryController struct {
 
 func (r *RepertoryController) ConsumerMachineList()  {
 	bdcId :=r.GetString("bdcId")
+	result := make(map[string]interface{})
 	for a :=0; a<3 ; a++  {
 		if a==0 {
 			consumer := GetConsumers(strconv.Itoa(a),bdcId)
@@ -21,13 +21,14 @@ func (r *RepertoryController) ConsumerMachineList()  {
 				for _,minerValue := range miner{
 					machineGoods := GetMachineGoods(strconv.Itoa(a),bdcId,value.Id,minerValue.Mine)
 					minerValue.ConsumerGoods = machineGoods
-					fmt.Print(machineGoods)
 				}
-
+				value.MinerO = miner
 			}
-
+			result["machines"] = consumer
 		}else if a==1 {
 
 		}
 	}
+	r.Data["json"] = map[string]interface{}{"msg":"成功","data":result,"code":0}
+	r.ServeJSON()
 }

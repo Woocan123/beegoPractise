@@ -12,7 +12,7 @@ type Miner struct {
 //里面的字段不能与上面Miner内的字段一样，否则查询不出
 type MinerO struct {
 	Mine string
-	ConsumerGoods []*ConsumerGoods `orm:="-"`
+	ConsumerGoods []*ConsumerGoodsO `orm:"-"`
 }
 
 
